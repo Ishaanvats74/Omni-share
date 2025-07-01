@@ -1,8 +1,6 @@
 'use client'
 import React, { useRef, useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
 const Generate = () => {
   const inputFileRef = useRef(null);
@@ -18,31 +16,7 @@ const Generate = () => {
     inputFileRef.current.value = '';
   }
 
-const handleUpload = async () => {
-    if (selected.length === 0) return console.log("Nothing is selected");
-    
-    setIsUploading(true);
-    try {
-      for (const file of selected) {
-        const fileName = `${Date.now()}-${file.name}`;
-        
-        const { data, error } = await supabase.storage
-          .from('files')
-          .upload(fileName, file);
-        
-        if (error) throw error;
-        
-        console.log(`Uploaded: ${fileName}`);
-      }
-      alert('Files uploaded successfully!');
-      handleRemove(); 
-    } catch (error) {
-      console.error('Upload error:', error);
-      alert('Upload failed!');
-    } finally {
-      setIsUploading(false);
-    }
-  }
+
 
 
   return (
