@@ -1,9 +1,11 @@
-import Generate from "../../generate/page"
+import { createClient } from '@supabase/supabase-js';
 
-export default async function POST(request) {
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-async function uploadFile(file) {
-  let formData = await request.formData()
+export async function POST(request) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+
   try {
     const formData = await request.formData();
     const files = formData.getAll('file');
@@ -31,9 +33,6 @@ async function uploadFile(file) {
     console.error('Unexpected error:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
       status: 500,
-});
-}
-} return (
-    <Generate />
-  )
+    });
+  }
 }
