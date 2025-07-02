@@ -14,38 +14,44 @@ const Upload = () => {
     setSelected([])
     inputFileRef.current.value = '';
   }
-
-  const handleUpload = ()=>{
-    if (selected.length === 0 ) return console.log("Nothing is selected");
+  
+    const handleUpload = async () => {
+    if (selected.length === 0) return console.log("Nothing is selected");
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    try{
-      for(const file in selected){
-        const fileName = `${Date.now()}-${file.name}`;
-        console.log("Uploading:", file.name);
-        uploadFile();
-        console.log(`Uploaded: ${fileName}`);
-      }
+
+    try {
+        for (const file of selected) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch("/app/api/upload/route.js", {
+        method: 'POST',
+        body: formData,
+    });
+
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Upload failed");
+
+        console.log("Uploaded:", file.name);
+        }
+
         alert('Files uploaded successfully!');
-        handleRemove(); 
-    } catch(error){
-      console.error('Upload error:', error);
-      alert('Upload failed!');
-    }finally{
-      setIsUploading(false);
-    }
+        handleRemove();
+    } catch (error) {
+        console.error('Upload error:', error);
+        alert('Upload failed!');
+    } finally {
+        setIsUploading(false);
+    };
+    
   } 
    return (
     <div className="flex flex-col items-center justify-center h-screen"> 
       <div className='border p-10 rounded-lg shadow-lg bg-white text-center'>
         <h1>Upload File </h1>
         <div className='flex items-center justify-center'>
-          <form name='formData' action={handleUpload} method='POST'>
           <input type='file' name='file' multiple className='border-2 border-gray-300 p-2 rounded-md' ref={inputFileRef} onChange={handleFileChange}/>
           <button disabled={selected.length === 0 || isUploading} onClick={handleRemove} className='ml-2'>X</button>
-          </form>
         </div>
         <div>
           {selected.length > 0 ? (
