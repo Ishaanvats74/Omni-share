@@ -14,6 +14,7 @@ const Upload = () => {
   const handleRemove =()=>{
     setSelected([])
     inputFileRef.current.value = '';
+    setUrl('');
   }
   
     const handleUpload = async () => {
@@ -39,7 +40,6 @@ const Upload = () => {
         
         alert('Files uploaded successfully!');
         setUrl(result.files[0].url);
-        // handleRemove();
     } catch (error) {
         console.error('Upload error:', error);
         alert('Upload failed!');
