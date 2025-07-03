@@ -1,6 +1,8 @@
 'use client';
 import React, { useRef, useState } from 'react'
 import {QRCodeSVG} from 'qrcode.react';
+import Swal from 'sweetalert2';
+import copy from "copy-to-clipboard";
 
 const Upload = () => {
     const inputFileRef = useRef(null);
@@ -12,11 +14,48 @@ const Upload = () => {
     setSelected(Array.from(e.target.files || []));
   }
 
+
+
   const handleRemove =()=>{
-    setSelected([])
-    inputFileRef.current.value = '';
-    setUrl('');
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: true
+        });
+        swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+        }).then((result) => {
+        if (result.isConfirmed) {
+            setSelected([])
+            inputFileRef.current.value = '';
+            setUrl('');
+            swalWithBootstrapButtons.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+            });
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your imaginary file is safe :)",
+            icon: "error"
+            });
+        }
+    });
   }
+
+
+
   
     const handleUpload = async () => {
     if (selected.length === 0) return console.log("Nothing is selected");
@@ -39,16 +78,35 @@ const Upload = () => {
         
         console.log("Uploaded ZIP URL:", result.files[0].url); 
         
-        alert('Files uploaded successfully!');
+        Swal.fire({
+            title: "Success",
+            text: "Files uploaded successfully!",
+            icon: "success"
+            });
         setUrl(result.files[0].url);
+        
     } catch (error) {
         console.error('Upload error:', error);
-        alert('Upload failed!');
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Upload failed!",
+        });
     } finally {
         setIsUploading(false);
-    };
+    }};
     
-  } 
+    
+const copyLink = () => {
+    copy(url); 
+    Swal.fire({
+        icon: "success",
+        title: "Copied!",
+        text: "Download link copied to clipboard.",
+    });
+    };
+
+
    return (
     <div className="flex flex-col items-center justify-center h-screen"> 
       <div className='border p-10 rounded-lg shadow-lg bg-white text-center'>
@@ -71,9 +129,10 @@ const Upload = () => {
             <div className="mt-4 flex  justify-between flex-wrap gap-4">
                 <div className='flex flex-col'>
                     <p>Download URL:</p>
-                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline ">
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline " >
                     {url}
                     </a>
+                    <button onClick={copyLink}>copy</button>
                 </div>
                 <div className="mt-4 flex  flex-col items-center" >
                     <p>Scan QR:</p>
