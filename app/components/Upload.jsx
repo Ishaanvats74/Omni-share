@@ -1,5 +1,6 @@
 'use client';
 import React, { useRef, useState } from 'react'
+import {QRCodeSVG} from 'qrcode.react';
 
 const Upload = () => {
     const inputFileRef = useRef(null);
@@ -67,11 +68,17 @@ const Upload = () => {
         </div>
         <button disabled={selected.length === 0 || isUploading} onClick={handleUpload} className='ml-2'>Upload</button>
         {url && (
-            <div className="mt-4">
-                <p>Download URL:</p>
-                <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-                {url}
-                </a>
+            <div className="mt-4 flex  justify-between flex-wrap gap-4">
+                <div className='flex flex-col'>
+                    <p>Download URL:</p>
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline ">
+                    {url}
+                    </a>
+                </div>
+                <div className="mt-4 flex  flex-col items-center" >
+                    <p>Scan QR:</p>
+                    <QRCodeSVG value={url} size={128} />
+                </div>
             </div>
             )}
       </div>
