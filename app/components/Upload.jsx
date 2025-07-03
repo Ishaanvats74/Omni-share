@@ -3,8 +3,9 @@ import React, { useRef, useState } from 'react'
 
 const Upload = () => {
     const inputFileRef = useRef(null);
-     const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
+    const [url, setUrl] = useState('');
 
    const handleFileChange = (e)=>{
     setSelected(Array.from(e.target.files || []));
@@ -20,23 +21,25 @@ const Upload = () => {
     setIsUploading(true);
 
     try {
-        for (const file of selected) {
         const formData = new FormData();
-        formData.append('file', file);
-
+        selected.forEach((file) => {
+            formData.append('file', file);
+            console.log("Uploaded:", file.name);
+        });
+        
         const response = await fetch("api/upload", {
-        method: 'POST',
-        body: formData,
-    });
-
+            method: 'POST',
+            body: formData,
+        });
+        
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || "Upload failed");
-
-        console.log("Uploaded:", file.name);
-        }
-
+        
+        console.log("Uploaded ZIP URL:", result.files[0].url); 
+        
         alert('Files uploaded successfully!');
-        handleRemove();
+        setUrl(result.files[0].url);
+        // handleRemove();
     } catch (error) {
         console.error('Upload error:', error);
         alert('Upload failed!');
@@ -63,6 +66,14 @@ const Upload = () => {
           )}
         </div>
         <button disabled={selected.length === 0 || isUploading} onClick={handleUpload} className='ml-2'>Upload</button>
+        {url && (
+            <div className="mt-4">
+                <p>Download URL:</p>
+                <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                {url}
+                </a>
+            </div>
+            )}
       </div>
     </div>
   )
