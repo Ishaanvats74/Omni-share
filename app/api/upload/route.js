@@ -22,10 +22,7 @@ export async function POST(request) {
 
     const zipBlob = await zip.generateAsync({ type: "blob" });
     const zipFileName = `${folderName}.zip`;
-
-
- 
-      
+     
     const { data, error } = await supabase.storage.from('files').upload(`zips/${zipFileName}`, zipBlob, {contentType: 'application/zip',});
 
     if (error) {
@@ -42,7 +39,6 @@ export async function POST(request) {
     }); 
     console.log('Uploaded:', zipFileName,'\nurl:',publicUrlData.publicUrl );
   
-
     return new Response(JSON.stringify({ success: true,folder: zipFileName, files: uploaded  ,url:publicUrlData.publicUrl}), {status: 200,});
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -50,4 +46,6 @@ export async function POST(request) {
       status: 500,
     });
   }
+
+  
 }

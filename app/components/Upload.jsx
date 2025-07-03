@@ -14,7 +14,7 @@ const Upload = () => {
     setSelected(Array.from(e.target.files || []));
   };
 
-  const handleRemove = () => {
+  const handleRemove = async () => {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -22,7 +22,7 @@ const Upload = () => {
       },
       buttonsStyling: true,
     });
-    swalWithBootstrapButtons
+    const result = await swalWithBootstrapButtons
       .fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -31,17 +31,29 @@ const Upload = () => {
         confirmButtonText: "Yes, delete it!",
         cancelButtonText: "No, cancel!",
         reverseButtons: true,
-      })
-      .then((result) => {
+      });
+ 
         if (result.isConfirmed) {
-          setSelected([]);
-          inputFileRef.current.value = "";
-          setUrl("");
-          swalWithBootstrapButtons.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          try {
+            const response = await fetch("/api/delete", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ url }),});
+              const res = await response.json();
+            setSelected([]);
+            inputFileRef.current.value = "";
+            setUrl("");
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+            
+          } catch (error) {
+            
+          }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire({
             title: "Cancelled",
@@ -49,7 +61,6 @@ const Upload = () => {
             icon: "error",
           });
         }
-      });
   };
 
   const handleUpload = async () => {
