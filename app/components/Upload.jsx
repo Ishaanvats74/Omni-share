@@ -102,24 +102,18 @@ const Upload = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="border p-10 rounded-lg shadow-lg bg-white text-center">
-        <h1>Upload File </h1>
+      <div className="border border-white/10 shadow bg-white/10 p-10 text-xl space-y-5 text-white rounded-2xl text-center">
+        <h1 className="text-3xl font-semibold text-center">Upload File </h1>
         <div className="flex items-center justify-center">
           <input
             type="file"
             name="file"
             multiple
-            className="border-2 border-gray-300 p-2 rounded-md"
+            className="w-full px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-purple-400"
             ref={inputFileRef}
             onChange={handleFileChange}
           />
-          <button
-            disabled={selected.length === 0 || isUploading}
-            onClick={handleRemove}
-            className="ml-2"
-          >
-            X
-          </button>
+          
         </div>
         <div>
           {selected.length > 0 ? (
@@ -132,13 +126,22 @@ const Upload = () => {
             <p className="text-gray-500 mt-2">No files selected</p>
           )}
         </div>
-        <button
-          disabled={selected.length === 0 || isUploading}
-          onClick={handleUpload}
-          className="ml-2"
-        >
-          Upload
-        </button>
+        <div className="flex w-full justify-between gap-5">
+            <button
+            disabled={selected.length === 0 || isUploading}
+            onClick={handleUpload}
+            className="w-full mt-4 py-2 bg-green-500 hover:bg-green-600 transition rounded-xl font-semibold"
+            >
+            Upload
+            </button>
+            <button
+                disabled={selected.length === 0 || isUploading}
+                onClick={handleRemove}
+                className="w-full mt-4 py-2 bg-gray-400 hover:bg-gray-500 transition rounded-xl font-semibold"
+                >
+                Cancel
+            </button>
+        </div>
         {url && (
           <div className="mt-4 flex  justify-between flex-wrap gap-4">
             <div className="flex flex-col">

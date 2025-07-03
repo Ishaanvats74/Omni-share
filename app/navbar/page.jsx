@@ -8,8 +8,10 @@ const Navbar = () => {
     {Name:"Generate",path:"/generate"},
     {Name:"About",path:"/about"},
   ]
+
+  
   return (
-    <div className='flex justify-between px-10 py-2 shadow mb-2 '>
+    <div className='flex justify-between px-10 py-3 shadow mb-2 text-white bg-white/10'>
       <div>
         <p className='text-3xl'>Omni-Share</p>
       </div>

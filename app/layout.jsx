@@ -12,8 +12,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" webcrx="">
       <body>
-        <Navbar/>
-        {children}
+        <div className="flex absolute z-0 ">
+          <video
+              src="/background.mp4"
+              autoPlay
+              muted
+              loop
+              className="h-fit w-fit "
+              />
+          </div>
+          <div className="z-10 relative ">
+            <Navbar/>
+            {children}
+          </div>
       </body>
     </html>
   );

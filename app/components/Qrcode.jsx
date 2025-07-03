@@ -68,8 +68,8 @@ const Qrcode = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-gray-200">
-      <div className=" p-5 rounded-2xl shadow-lg bg-white space-y-5">
+    <div className="flex flex-col items-center justify-center h-screen">
+      <div className="border border-white/10 shadow bg-white/10 p-10 text-xl space-y-5 text-white rounded-2xl text-center">
         <div className="text-center text-2xl">
           <h1>Qr Code Generator</h1>
         </div>
@@ -77,15 +77,15 @@ const Qrcode = () => {
           <input
             type="text"
             ref={link}
-            className="hover:border-2 border rounded bg-gray-50 h-8 w-[300px] pl-2"
+            className="w-full px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-purple-400"
             placeholder="Drop Link Here"
             onChange={linkUpload}
           />
           <div className="flex justify-center gap-5 ">
-            <button disabled={!linkUploaded.trim()} onClick={upload} className="border p-1">
+            <button disabled={!linkUploaded.trim()} onClick={upload} className="w-full mt-4 py-2 bg-green-500 hover:bg-green-600 transition rounded-xl font-semibold">
               Upload
             </button>
-            <button disabled={!linkUploaded.trim()} onClick={cancel} className="border p-1">
+            <button disabled={!linkUploaded.trim()} onClick={cancel} className="w-full mt-4 py-2 bg-gray-400 hover:bg-gray-500 transition rounded-xl font-semibold">
               cancel
             </button>
           </div>
