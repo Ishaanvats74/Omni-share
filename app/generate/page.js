@@ -1,10 +1,10 @@
-'use client';
-import React, { useState } from 'react';
-import Upload from '../components/Upload';
-import Qrcode from '../components/Qrcode';
+"use client";
+import React, { useState } from "react";
+import Upload from "../components/Upload";
+import Qrcode from "../components/Qrcode";
 
 const Page = () => {
-  const [selectedOption, setSelectedOption] = useState('upload');
+  const [selectedOption, setSelectedOption] = useState("upload");
 
   return (
     <div>
@@ -17,8 +17,8 @@ const Page = () => {
       </select>
 
       <div className="mt-4">
-        {selectedOption === 'upload' && <Upload />}
-        {selectedOption === 'qrcode' && <Qrcode />}
+        {selectedOption === "upload" && <Upload />}
+        {selectedOption === "qrcode" && <Qrcode />}
       </div>
     </div>
   );
